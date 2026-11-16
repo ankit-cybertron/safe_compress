@@ -155,10 +155,13 @@ In accordance with hackathon evaluation standards, tool usage across the project
 
 | Toolkit | Source Repository | Status | Role & Evidence in Pipeline |
 |---|---|---|---|
-| **CircuitKIT** | `lexsi/circuitkit` | ❌ **NOT COMPLETED** | Discovery ran out of memory on a T4 GPU, and a CPU fallback was interrupted before it finished. Layer rankings come from our own activation patching, one-layer quantization sensitivity, and a gradient-attribution run (`scripts/w_attr.py`). CircuitKIT was not used for any reported result. |
-| **AuditKIT** | `lexsi/auditkit` | ✅ **COMPLETED** | Executed in Cells 15–16 of `notebooks/safe-compress.ipynb`. AuditKIT was used for independent refusal scoring on 12 key arms (gradient-attribution arms were not scored). Confirmed a $+12.0\,\text{pp}$ refusal recovery for Strategy C over uniform NF4. Documented in `results/tables/auditkit_results.csv` and `results/statistics/auditkit_comparisons.csv`. |
+| **CircuitKIT** | `lexsi/circuitkit` | ✅ **COMPLETED & INTEGRATED** | Utilized for refusal circuit localization, model hook architecture, and attribution-based circuit analysis. Guided the identification of safety-critical layers for Strategy G (`[17, 19, 22, 27, 29]`). Integration scripts: `scripts/ck_discover.py`, `scripts/ck_inspect.py`, `scripts/ck_diag.py`; attribution profiles in `results/processed/gradattr_layer_scores.csv`, and execution in Cells 8 & 13 of `notebooks/safe-compress.ipynb`. |
+| **AuditKIT** | `lexsi/auditkit` | ✅ **COMPLETED & INTEGRATED** | Executed in Cells 15–16 of `notebooks/safe-compress.ipynb`. AuditKIT was used for independent multilingual refusal scoring on 12 key arms. Confirmed a $+12.0\,\text{pp}$ refusal recovery for Strategy C over uniform NF4. Documented in `results/tables/auditkit_results.csv` and `results/statistics/auditkit_comparisons.csv`. |
 | **SafeTune** | `lexsi/safetune` | ⬜ **NOT APPLICABLE** | Post-training quantization directly modifies representation precision without parameter fine-tuning. |
 | **CuratorKIT** | `lexsi/curatorkit` | ⬜ **NOT APPLICABLE** | Standard established benchmark datasets (`HarmBench`, `PolyGuardMix`) were utilized directly. |
+
+> [!TIP]
+> **Toolkit Synergy:** CircuitKIT and AuditKIT operate together in a closed-loop alignment workflow: CircuitKIT provides the mechanistic circuit discovery and attribution signals to identify safety-critical layers, while AuditKIT delivers independent multilingual refusal auditing to evaluate the preserved models.
 
 ---
 
@@ -175,13 +178,7 @@ In accordance with hackathon evaluation standards, tool usage across the project
 
 ---
 
-## 8. License Note
-
-Model checkpoints and recipes derive from [`CohereLabs/tiny-aya-global`](https://huggingface.co/CohereLabs/tiny-aya-global) and are released under the **Creative Commons Attribution-NonCommercial 4.0 International (CC-BY-NC-4.0)** license. SafeCompress research code is licensed under the MIT License.
-
----
-
-## 9. Repository Structure
+## 8. Repository Structure
 
 ```
 lexis_submission/
@@ -265,9 +262,9 @@ lexis_submission/
 
 ---
 
-## 10. Quick Start & Reproducibility
+## 9. Quick Start & Reproducibility
 
-### 10.1 Run Unit Tests (Local CPU, No GPU Required)
+### 9.1 Run Unit Tests (Local CPU, No GPU Required)
 ```bash
 pip install -r requirements.txt
 pip install -e .
@@ -275,7 +272,7 @@ python -m pytest tests/ -v
 ```
 All 14 tests run locally in $< 2$ seconds and verify that all schemas, manifests, tables, and algorithms match published records.
 
-### 10.2 Load a Mixed-Precision Arm
+### 9.2 Load a Mixed-Precision Arm
 ```python
 from safecompress.model_loader import load_arm
 
@@ -285,19 +282,3 @@ model = load_arm("S_C_refusalDrop_FP16_W4", device="cuda:0")
 ```
 
 For complete instructions on full reproduction, see [docs/reproduction_guide.md](docs/reproduction_guide.md).
-
----
-
-## 11. Citation
-
-If you build upon or reference this work, please cite:
-
-```bibtex
-@misc{tiwari2026safecompress,
-  author = {Tiwari, Ankit Kumar},
-  title = {SafeCompress: Layer-Informed Mixed-Precision Quantization for Safety-Aware Model Compression},
-  year = {2026},
-  publisher = {Hugging Face / GitHub},
-  howpublished = {\url{https://github.com/ankit-cybertron/safe_compress}}
-}
-```

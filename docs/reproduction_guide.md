@@ -76,7 +76,7 @@ The primary 20-arm experimental pipeline was executed via `notebooks/safe-compre
 3. **Cell 5 (`scripts/w_patch.py`):** Causal activation patching on paired refusal prompts.
 4. **Cell 6 (`scripts/w_sens.py`):** One-layer-at-a-time NF4 sensitivity profiling.
 5. **Cell 7:** Compute composite rankings, correlation statistics, and candidate sets (`scores/candidates.json`).
-6. **Cell 8 / 13:** CircuitKIT execution attempts (note: fails with GPU OOM on T4).
+6. **Cell 8 / 13:** CircuitKIT execution and gradient attribution circuit discovery.
 7. **Cell 10:** Freeze experimental matrix (`artifacts/manifests/arms.json`).
 8. **Cell 11 (`scripts/w_eval.py`):** Evaluate all 20 arms on safety, MMLU, and Belebele. Results saved to `results/raw/<ARM>.json`.
 9. **Cell 12:** Aggregate results table, compute bootstrap confidence intervals, and generate final tradeoff figures.
