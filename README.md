@@ -10,7 +10,7 @@
 > **Hackathon:** [Lexsi AI Safety & Alignment Hackathon](https://hackathon.lexsi.ai/)  
 > **Track:** Track 2b: AI Safety and Correction  
 > **Problem Statements:** Safety-aware compression; Repairing safety drift without retraining  
-> **Author:** Ankit Kumar Tiwari  
+> **Author:** Ankit Kumar Tiwari ([ankit.cybertron@proton.me](mailto:ankit.cybertron@proton.me))  
 > **Base Model:** [`CohereLabs/tiny-aya-global`](https://huggingface.co/CohereLabs/tiny-aya-global) (about 3B parameters, 36 decoder layers)  
 > **Canonical Article:** [ARTICLE.md](ARTICLE.md) | **Pilot Experiment Article:** [safecompress/ARTICLE.md](safecompress/ARTICLE.md)
 
@@ -93,42 +93,6 @@ Authoritative experimental results programmatically extracted from `results/tabl
 
 ![SafeCompress Architecture Diagram](figures/methodology/safecompress_architecture_diagram.png)
 *Figure 5: SafeCompress end-to-end research architecture: (1) 36-layer multi-signal profiling on CohereLabs/tiny-aya-global, (2) targeted layer selection engine allocating a $K=5$ layer budget (~14% of parameters), (3) asymmetric bitsandbytes mixed-precision quantization, and (4) multi-metric evaluation with dual-scorer safety validation.*
-
-```mermaid
-flowchart TD
-    M["Base Model: CohereLabs/tiny-aya-global (~3B)"] --> L["36-Layer Profiling"]
-    
-    subgraph Profiling ["1. Multi-Signal Layer Profiling"]
-        L1["Activation Patching<br/>(Causal Effect on Refusal Gap)"]
-        L2["One-Layer NF4 Sensitivity<br/>(Logit Drift KL Divergence)"]
-        L3["Refusal Gap Erosion<br/>(Drop in Refusal Log-Odds)"]
-    end
-    
-    L --> L1 & L2 & L3
-    
-    subgraph Selection ["2. Protected Layer Selection (K=5)"]
-        L1 --> SA["Strategy A: [0, 5, 17, 19, 22]"]
-        L2 --> SB["Strategy B: [0, 7, 12, 16, 35]"]
-        L3 --> SC["Strategy C: [7, 14, 16, 27, 35]"]
-        L1 & L2 --> SD["Strategy D: [0, 14, 16, 17, 19]"]
-        L --> SG["Strategy G: [17, 19, 22, 27, 29]"]
-        L --> SN["Negative Control: [6, 25, 31, 33, 34]"]
-        L --> SR["Random Controls: R0 - R3"]
-    end
-    
-    subgraph Execution ["3. Mixed-Precision Loading"]
-        SA & SB & SC & SD & SG & SN & SR --> B["bitsandbytes Mixed-Precision Loader"]
-        B --> B1["5 Protected Layers in FP16 or INT8"]
-        B --> B2["31 Layers in NormalFloat 4 (NF4)"]
-    end
-    
-    subgraph Evaluation ["4. Rigorous Multi-Metric Evaluation"]
-        B1 & B2 --> EV["Evaluation Pipeline"]
-        EV --> EV1["Safety Refusal: 400 Prompts (EN & HI)"]
-        EV --> EV2["Capability: 600 MMLU + 200 Belebele"]
-        EV --> EV3["AuditKIT Independent Refusal Judge (12 Arms)"]
-    end
-```
 
 ---
 
@@ -259,26 +223,3 @@ lexis_submission/
 │
 └── archive/                           # Preserved earlier experiment files & placeholders
 ```
-
----
-
-## 9. Quick Start & Reproducibility
-
-### 9.1 Run Unit Tests (Local CPU, No GPU Required)
-```bash
-pip install -r requirements.txt
-pip install -e .
-python -m pytest tests/ -v
-```
-All 14 tests run locally in $< 2$ seconds and verify that all schemas, manifests, tables, and algorithms match published records.
-
-### 9.2 Load a Mixed-Precision Arm
-```python
-from safecompress.model_loader import load_arm
-
-# Load Strategy C (Refusal Drop FP16+NF4 mixed precision)
-# Protects layers [7, 14, 16, 27, 35] in FP16, remaining 31 layers in NF4
-model = load_arm("S_C_refusalDrop_FP16_W4", device="cuda:0")
-```
-
-For complete instructions on full reproduction, see [docs/reproduction_guide.md](docs/reproduction_guide.md).
