@@ -22,7 +22,7 @@ The negative control arm `S_N_negative_FP16_W4` (layers `[6, 25, 31, 33, 34]`, s
 The choice of $K=5$ layers (~14% of the 36-layer network) was held constant across all arms to control parameter volume strictly. We did not conduct a full budget sweep (e.g., $K \in \{1, 2, 3, 5, 8, 12\}$) to determine the minimal sufficient number of protected layers.
 
 ### C. Single Base Model Architecture
-All findings were obtained on `CohereForAI/aya-23-8B`. While Aya-23 provides an interesting architectural blend of sliding-window and global attention, findings may not generalize identically to LLaMA, Mistral, or Qwen architectures without re-evaluating layer sensitivities.
+All findings were obtained on `CohereLabs/tiny-aya-global`. While Tiny Aya Global provides an interesting architectural blend of sliding-window and global attention, findings may not generalize identically to LLaMA, Mistral, or Qwen architectures without re-evaluating layer sensitivities.
 
 ### D. Refusal Phrase Matching Limitations
 The primary evaluation relies on a 300-character prefix regular expression matcher. While validated against English and Hindi test sets, phrase matching can theoretically yield false positives (e.g., "I cannot provide harmful steps, but here is...") or false negatives (creative refusals). The AuditKIT independent scoring provides external validation but was evaluated on a 200-sample subset due to computational constraints.

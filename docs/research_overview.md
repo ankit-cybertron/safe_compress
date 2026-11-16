@@ -3,9 +3,9 @@
 > **Track:** Lexsi Hackathon Track 2 — AI Red Teaming, Safety and Alignment  
 > **Problem Statement:** Track 2b — Problem Statement 11: Safety-aware compression  
 > **Author:** Ankit Kumar Tiwari  
-> **Model:** `CohereForAI/aya-23-8B`  
-> **Hugging Face Model Collection:** [`ankittiwarifr/safecompress`](https://huggingface.co/collections/ankittiwarifr/safecompress)  
-> **Hugging Face Results Dataset:** [`ankittiwarifr/safecompress-results`](https://huggingface.co/datasets/ankittiwarifr/safecompress-results)  
+> **Model:** `CohereLabs/tiny-aya-global`  
+> **Hugging Face Model Collection:** [`cybertronak/safecompress-safety-aware-tiny-aya-compression`](https://huggingface.co/collections/cybertronak/safecompress-safety-aware-tiny-aya-compression)  
+> **Hugging Face Results Dataset:** [`cybertronak/layerlab-store`](https://huggingface.co/datasets/cybertronak/layerlab-store)  
 
 ---
 
@@ -15,7 +15,7 @@ Post-training quantization (PTQ) is the standard method for deploying large lang
 
 **SafeCompress** investigates whether **layer-informed mixed-precision quantization**—keeping a small budget ($K=5$ out of 36 layers, representing ~14% of model layers) in higher precision (FP16 or INT8) while quantizing the remaining 31 layers to NF4—can preserve safety-critical refusal behaviour while maintaining low memory footprint and high throughput.
 
-Across 20 systematic experimental arms on `CohereForAI/aya-23-8B`, evaluating 400 safety prompts (English and Hindi), 600 multilingual MMLU questions, and 200 Belebele reading comprehension items:
+Across 20 systematic experimental arms on `CohereLabs/tiny-aya-global`, evaluating 400 safety prompts (English and Hindi), 600 multilingual MMLU questions, and 200 Belebele reading comprehension items:
 
 1. **Safety Recovery:** Protecting the 5 layers identified by refusal gap degradation under quantization (`S_C_refusalDrop_FP16_W4`, layers `[7, 14, 16, 27, 35]`) restores harmful prompt refusal to **65.5%**, matching the unquantized FP16 baseline (**65.5%**) and outperforming uniform NF4 (**60.5%**, $+5.0\,\text{pp}$, 95% bootstrap CI: $[+2.5, +8.0]$).
 2. **AuditKIT Validation:** Evaluated independently via Lexsi's AuditKIT toolkit on a 200-sample probe, `S_C_refusalDrop_FP16_W4` achieves **56.0%** refusal vs. **44.0%** for uniform NF4 ($+12.0\,\text{pp}$, 95% bootstrap CI: $[+8.0, +17.0]$).
@@ -37,13 +37,13 @@ Across 20 systematic experimental arms on `CohereForAI/aya-23-8B`, evaluating 40
 
 ## 3. Base Model Selection & Rationale
 
-We selected **`CohereForAI/aya-23-8B`** as the research substrate based on five criteria:
+We selected **`CohereLabs/tiny-aya-global`** as the research substrate based on five criteria:
 
-1. **Multilingual Safety Alignment:** Aya-23 is explicitly instruction-tuned and aligned across 23 languages. This enables evaluating safety preservation across English and high-risk non-English languages (Hindi).
-2. **Heterogeneous Architectural Topology:** Aya-23 incorporates an alternating attention pattern:
+1. **Multilingual Safety Alignment:** Tiny Aya Global is explicitly instruction-tuned and aligned across 23 languages. This enables evaluating safety preservation across English and high-risk non-English languages (Hindi).
+2. **Heterogeneous Architectural Topology:** Tiny Aya Global incorporates an alternating attention pattern:
    - 27 sliding-window attention layers
    - 9 full-context global attention layers (at indices `[3, 7, 11, 15, 19, 23, 27, 31, 35]`). This architectural variation allows testing whether layer type correlates with quantization sensitivity.
-3. **Parameter Scale Relevance:** At ~8B parameters (78.12M parameters per decoder layer), Aya-23 represents the frontier of models realistically deployed on single consumer GPUs (8GB–16GB VRAM) and edge devices where quantization is practically required.
+3. **Parameter Scale Relevance:** At ~8B parameters (78.12M parameters per decoder layer), Tiny Aya Global represents the frontier of models realistically deployed on single consumer GPUs (8GB–16GB VRAM) and edge devices where quantization is practically required.
 4. **Tied Embedding Weights:** The vocabulary embedding and output projection share weights, ensuring quantization effects are localized strictly to the transformer blocks.
 5. **Open Weights & Reproducibility:** Model weights are publicly available on the Hugging Face Hub under open research licensing.
 

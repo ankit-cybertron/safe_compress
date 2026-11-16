@@ -10,7 +10,8 @@ All figures generated across the SafeCompress research experiments, categorized 
 - **`safecompress_architecture_diagram.png`:** Comprehensive four-stage system architecture diagram rendered at 300 DPI on a clean white background, depicting base model layer topology, multi-signal profiling, layer selection strategies, mixed-precision allocation, and the dual-scorer evaluation protocol.
 
 ### `figures/tradeoffs/` (Memory vs. Safety vs. Capability)
-- **`final_results.png`:** The primary canonical figure for the 20-arm published experiment. Plots harmful refusal rate against model GPU memory allocation and MMLU capability across all 20 arms.
+- **`safety_capability_tradeoff_20arms.png`:** The 20-arm scatter plot of Harmful-prompt refusal rate (%) versus Global-MMLU accuracy (%) with numbered markers matching the configuration key, generated from `results/tables/results_table.csv`.
+- **`final_results.png`:** Four-panel bar chart overview displaying Global-MMLU, Belebele, harmful refusal, and first-token refusal logit gap with 95% bootstrap confidence intervals across all 20 arms.
 - **`fig1_pareto_safety_vs_compression.png`:** Pareto frontier plot from the earlier pilot experiment.
 - **`05_safety_capability_tradeoff_clean.png`:** Clean publication-ready scatter plot of safety refusal vs. MMLU capability.
 - **`tiny_aya_18_arm_results_table.png`:** Visual summary table comparing arm metrics.

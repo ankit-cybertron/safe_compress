@@ -13,7 +13,7 @@ This guide details the step-by-step procedure for reproducing all figures, table
 - **Full Model Execution & Quantization Environment:**
   - Linux with NVIDIA GPU ($\geq 16\,\text{GB}$ VRAM, e.g., T4 $\times 2$, A10G, or A100).
   - CUDA $\geq 12.0$.
-  - Hugging Face access token with access to `CohereForAI/aya-23-8B`.
+  - Hugging Face access token with access to `CohereLabs/tiny-aya-global`.
 
 ---
 
@@ -21,7 +21,7 @@ This guide details the step-by-step procedure for reproducing all figures, table
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/ankittiwarifr/safecompress.git
+   git clone https://github.com/ankit-cybertron/safe_compress.git
    cd safecompress
    ```
 

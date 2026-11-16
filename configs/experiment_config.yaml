@@ -3,7 +3,7 @@
 
 experiment:
   name: "safecompress_aya23_20arm"
-  model: "CohereForAI/aya-23-8B"
+  model: "CohereLabs/tiny-aya-global"
   num_layers: 36
   k_protected: 5
   seed: 42

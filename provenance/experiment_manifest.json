@@ -1,7 +1,7 @@
 {
   "project": "SafeCompress",
   "track": "Track 2b — Problem Statement 11: Safety-aware compression",
-  "base_model": "CohereForAI/aya-23-8B",
+  "base_model": "CohereLabs/tiny-aya-global",
   "total_layers": 36,
   "k_protected_layers": 5,
   "total_arms": 20,

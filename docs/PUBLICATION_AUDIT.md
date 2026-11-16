@@ -29,8 +29,8 @@ These files contain no sensitive data, no gated-dataset content, and no credenti
 
 | Artifact | Location | Content |
 |---|---|---|
-| 20-arm model collection | `ankittiwarifr/safecompress` (HuggingFace) | Quantized model weights |
-| Results dataset | `ankittiwarifr/safecompress-results` (HuggingFace) | Scores, figures, code — NOT prompts or replies |
+| 20-arm model collection | `cybertronak/safecompress-safety-aware-tiny-aya-compression` (HuggingFace) | Quantized model weights |
+| Results dataset | `cybertronak/layerlab-store` (HuggingFace) | Scores, figures, code — NOT prompts or replies |
 
 ---
 
@@ -45,7 +45,7 @@ These files are **not** in the submission because the source datasets are gated 
 | Per-arm raw response JSONL files (if they contain prompt text) | Would expose gated prompt content | As above |
 
 > [!IMPORTANT]
-> The dataset published at `ankittiwarifr/safecompress-results` contains scores, figures, and code — it explicitly does **not** contain prompt text or model replies. This is consistent with the terms of the gated source datasets.
+> The dataset published at `cybertronak/layerlab-store` contains scores, figures, and code — it explicitly does **not** contain prompt text or model replies. This is consistent with the terms of the gated source datasets.
 
 ---
 

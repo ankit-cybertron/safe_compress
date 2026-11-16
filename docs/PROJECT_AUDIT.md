@@ -86,7 +86,7 @@ The final experiment supersedes the earlier one in every respect. The `safecompr
 - **Arms:** 20 total (2 baseline + 12 strategy × 2 precision + 6 random)  
 - **Evaluation scale:** 400 safety prompts, 600 MMLU, 200 Belebele  
 - **Statistical method:** Paired bootstrap CI, n = 10,000 resamples  
-- **HF artifacts:** `ankittiwarifr/safecompress` (model collection), `ankittiwarifr/safecompress-results` (results dataset)  
+- **HF artifacts:** `cybertronak/safecompress-safety-aware-tiny-aya-compression` (model collection), `cybertronak/layerlab-store` (results dataset)  
 
 ---
 

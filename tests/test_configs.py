@@ -41,11 +41,11 @@ def test_model_config_yaml():
     yaml_path = Path("configs/model_config.yaml")
     assert yaml_path.exists()
     content = yaml_path.read_text()
-    assert "CohereForAI/aya-23-8B" in content
+    assert "CohereLabs/tiny-aya-global" in content
     assert "num_layers: 36" in content
     if _HAS_YAML:
         cfg = yaml.safe_load(content)
-        assert cfg["model"]["id"] == "CohereForAI/aya-23-8B"
+        assert cfg["model"]["id"] == "CohereLabs/tiny-aya-global"
         assert cfg["model"]["num_layers"] == 36
 
 

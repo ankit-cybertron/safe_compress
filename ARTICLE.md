@@ -1,9 +1,9 @@
 # SafeCompress: Layer-Informed Mixed-Precision Quantization for Safety-Aware Model Compression
 
 **Author:** Ankit Kumar Tiwari  
-**Affiliation / Track:** Lexsi AI Safety & Alignment Hackathon (Track 2b: AI Red Teaming, Safety and Alignment — Problem Statement 11)  
-**Base Model:** `CohereForAI/aya-23-8B`  
-**Artifacts:** Model Collection at [`ankittiwarifr/safecompress`](https://huggingface.co/collections/ankittiwarifr/safecompress) | Results Dataset at [`ankittiwarifr/safecompress-results`](https://huggingface.co/datasets/ankittiwarifr/safecompress-results)  
+**Affiliation / Track:** Lexsi AI Safety & Alignment Hackathon (Track 2b: AI Safety and Correction)  
+**Base Model:** [`CohereLabs/tiny-aya-global`](https://huggingface.co/CohereLabs/tiny-aya-global) (about 3B parameters, 36 decoder layers)  
+**Artifacts:** Model Collection at [`cybertronak/safecompress-safety-aware-tiny-aya-compression`](https://huggingface.co/collections/cybertronak/safecompress-safety-aware-tiny-aya-compression) | Results Dataset at [`cybertronak/layerlab-store`](https://huggingface.co/datasets/cybertronak/layerlab-store)  
 
 > [!NOTE]
 > This article documents the final 20-arm published investigation. An earlier preliminary pilot experiment focusing solely on activation-patching in a 12-arm configuration is preserved in `safecompress/ARTICLE.md`.
@@ -12,7 +12,7 @@
 
 ## Abstract
 
-Uniform 4-bit post-training quantization drastically reduces the memory footprint of large language models, but often induces safety alignment degradation—causing models to fulfill harmful requests they refuse at full 16-bit precision. In this work, we propose and evaluate **SafeCompress**, an empirical investigation into *layer-informed mixed-precision quantization*. By keeping a small budget ($K=5$ out of 36 layers, ~14% of the network) in higher precision (FP16 or INT8) and quantizing the remaining 31 layers to NormalFloat 4 (NF4), we test whether refusal mechanisms can be selectively preserved without sacrificing memory efficiency. Across 20 experimental arms on `CohereForAI/aya-23-8B` evaluated on 400 safety prompts (English and Hindi), 600 multilingual MMLU questions, and 200 Belebele items, we find: (1) Protecting layers identified by refusal logit gap erosion under quantization (`S_C_refusalDrop_FP16_W4`, layers `[7, 14, 16, 27, 35]`) restores harmful refusal to **65.5%**, matching the unquantized FP16 baseline (**65.5%**) and outperforming uniform NF4 (**60.5%**, $+5.0\,\text{pp}$, 95% bootstrap CI: $[+2.5, +8.0]$), while consuming only **3.12 GB** of GPU memory vs. **6.70 GB** for FP16. (2) Independent evaluation using Lexsi's AuditKIT confirms this recovery, showing a $+12.0\,\text{pp}$ refusal gain over uniform NF4 ($56.0\%$ vs $44.0\%$, 95% CI: $[+8.0, +17.0]$). (3) Crucially, an explicit negative control arm protecting the 5 *lowest*-ranked layers on both importance and fragility also achieves **64.0%** refusal ($+3.5\,\text{pp}$ over uniform NF4). This indicates that while mixed precision reliably preserves refusal behaviour, the underlying safety preservation benefit is partially distributed across transformer layers rather than strictly isolated to a single sparse circuit.
+Uniform 4-bit post-training quantization drastically reduces the memory footprint of large language models, but often induces safety alignment degradation—causing models to fulfill harmful requests they refuse at full 16-bit precision. In this work, we propose and evaluate **SafeCompress**, an empirical investigation into *layer-informed mixed-precision quantization*. By keeping a small budget ($K=5$ out of 36 layers, ~14% of the network) in higher precision (FP16 or INT8) and quantizing the remaining 31 layers to NormalFloat 4 (NF4), we test whether refusal mechanisms can be selectively preserved without sacrificing memory efficiency. Across 20 experimental arms on `CohereLabs/tiny-aya-global` evaluated on 400 safety prompts (English and Hindi), 600 multilingual MMLU questions, and 200 Belebele items, we find: (1) Protecting layers identified by refusal logit gap erosion under quantization (`S_C_refusalDrop_FP16_W4`, layers `[7, 14, 16, 27, 35]`) restores harmful refusal to **65.5%**, matching the unquantized FP16 baseline (**65.5%**) and outperforming uniform NF4 (**60.5%**, $+5.0\,\text{pp}$, 95% bootstrap CI: $[+2.5, +8.0]$), while consuming only **3.12 GB** of GPU memory vs. **6.70 GB** for FP16. (2) Independent evaluation using Lexsi's AuditKIT confirms this recovery, showing a $+12.0\,\text{pp}$ refusal gain over uniform NF4 ($56.0\%$ vs $44.0\%$, 95% CI: $[+8.0, +17.0]$). (3) Crucially, an explicit negative control arm protecting the 5 *lowest*-ranked layers on both importance and fragility also achieves **64.0%** refusal ($+3.5\,\text{pp}$ over uniform NF4). This indicates that while mixed precision reliably preserves refusal behaviour, the underlying safety preservation benefit is partially distributed across transformer layers rather than strictly isolated to a single sparse circuit.
 
 ---
 
@@ -34,10 +34,10 @@ We investigate three central questions:
 ## 2. Experimental Setup & Model Architecture
 
 ![SafeCompress Architecture Diagram](figures/methodology/safecompress_architecture_diagram.png)
-*Figure 1: SafeCompress system architecture: (1) 36-layer multi-signal profiling on Cohere Aya-23 8B, (2) targeted layer selection engine allocating a $K=5$ layer budget, (3) asymmetric bitsandbytes mixed-precision quantization, and (4) multi-metric evaluation with dual-scorer safety validation.*
+*Figure 1: SafeCompress system architecture: (1) 36-layer multi-signal profiling on CohereLabs/tiny-aya-global, (2) targeted layer selection engine allocating a $K=5$ layer budget, (3) asymmetric bitsandbytes mixed-precision quantization, and (4) multi-metric evaluation with dual-scorer safety validation.*
 
 ### 2.1 Base Model Selection
-We conduct all experiments on **`CohereForAI/aya-23-8B`**, an 8-billion parameter multilingual instruction-tuned model. Aya-23 features 36 decoder layers with a hybrid attention topology: 27 sliding-window attention layers and 9 full-context global attention layers (at indices `[3, 7, 11, 15, 19, 23, 27, 31, 35]`). Each layer comprises 78.12M parameters (10.49M attention, 67.63M MLP). The embedding and output projection layers share tied weights.
+We conduct all experiments on **[`CohereLabs/tiny-aya-global`](https://huggingface.co/CohereLabs/tiny-aya-global)**, an approximately 3-billion parameter multilingual instruction-tuned model. Tiny Aya Global features 36 decoder layers with a hybrid attention topology: 27 sliding-window attention layers and 9 full-context global attention layers (at indices `[3, 7, 11, 15, 19, 23, 27, 31, 35]`). Each layer comprises 78.12M parameters (10.49M attention, 67.63M MLP). The embedding and output projection layers share tied weights.
 
 ### 2.2 Layer Scoring Methodologies
 To identify candidate layers for protection, all 36 layers were systematically profiled:
@@ -86,8 +86,8 @@ All 20 arms were evaluated on 400 safety prompts (100 English harmful, 100 Hindi
 | `R0_W8_W4` | 2.73 | 4.01 | 110.3 | 0.457 | 0.750 | **0.595** | $[0.525, 0.665]$ | 0.010 |
 | `R1_W8_W4` | 2.73 | 4.01 | 110.0 | 0.459 | 0.755 | **0.600** | $[0.530, 0.665]$ | 0.015 |
 
-![Safety vs Compression Tradeoff](figures/tradeoffs/final_results.png)
-*Figure 2: Empirical Pareto trade-offs across all 20 arms on `CohereForAI/aya-23-8B`. Left: Harmful request refusal rate (%) versus model GPU memory allocation (GB). Right: Refusal preservation versus multilingual reasoning capability on MMLU.*
+![Safety-capability trade-off across 20 experimental arms](figures/tradeoffs/safety_capability_tradeoff_20arms.png)
+*Figure 2: Empirical safety-capability trade-off across all 20 arms on CohereLabs/tiny-aya-global. Harmful prompt refusal rate (%) versus Global-MMLU accuracy (%).*
 
 ![Lexsi AuditKIT Refusal Evaluation](figures/safety/auditkit_refusal.png)
 *Figure 3: Independent multilingual refusal evaluation using Lexsi's AuditKIT across key experimental arms (100 harmful prompts and 100 benign probes).*

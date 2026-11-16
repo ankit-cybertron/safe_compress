@@ -1,6 +1,6 @@
 # Layer Selection Methodology — SafeCompress
 
-SafeCompress systematically tested six analytical scoring methods to rank the 36 decoder layers of `CohereForAI/aya-23-8B`.
+SafeCompress systematically tested six analytical scoring methods to rank the 36 decoder layers of `CohereLabs/tiny-aya-global`.
 
 ---
 

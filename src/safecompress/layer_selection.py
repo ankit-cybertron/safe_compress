@@ -4,7 +4,7 @@ Provides the canonical protected layer indices identified across different
 interpretability and sensitivity scoring methods, as well as random and negative
 control layer sets.
 
-Model: CohereForAI/aya-23-8B (36 decoder layers, indices 0..35).
+Model: CohereLabs/tiny-aya-global (36 decoder layers, indices 0..35).
 K = 5 layers protected per mixed-precision arm.
 """
 

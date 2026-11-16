@@ -65,8 +65,8 @@ def create_architecture_diagram(output_path="figures/methodology/safecompress_ar
     bm_box = FancyBboxPatch((0.7, 7.0), 3.7, 0.75, boxstyle="round,pad=0.08,rounding_size=0.12",
                             ec="#93C5FD", fc="#F0F7FF", linewidth=1.2)
     ax.add_patch(bm_box)
-    ax.text(2.55, 7.48, "Cohere Aya-23 8B (36 Layers)", fontsize=11, fontweight="bold", ha="center", va="center", color="#1E3A8A")
-    ax.text(2.55, 7.20, "27 Sliding Attention + 9 Full Global Attention", fontsize=8.5, ha="center", va="center", color="#3B82F6")
+    ax.text(2.55, 7.48, "CohereLabs/tiny-aya-global (~3B)", fontsize=11, fontweight="bold", ha="center", va="center", color="#1E3A8A")
+    ax.text(2.55, 7.20, "36 Layers: 27 Sliding Attention + 9 Full Global Attention", fontsize=8.2, ha="center", va="center", color="#3B82F6")
 
     # Layer Stack Diagram
     stack_box = FancyBboxPatch((0.7, 5.0), 3.7, 1.8, boxstyle="round,pad=0.08,rounding_size=0.12",
@@ -238,7 +238,7 @@ def create_architecture_diagram(output_path="figures/methodology/safecompress_ar
     ft_box = FancyBboxPatch((0.5, 0.2), 18.0, 0.45, boxstyle="round,pad=0.05,rounding_size=0.08",
                             ec="#E2E8F0", fc="#F8FAFC", linewidth=1.0)
     ax.add_patch(ft_box)
-    ax.text(9.5, 0.42, "SafeCompress Research Pipeline • Lexsi AI Safety & Alignment Hackathon (Track 2b, PS-11) • Author: Ankit Kumar Tiwari • Base Model: Cohere Aya-23 8B",
+    ax.text(9.5, 0.42, "SafeCompress Research Pipeline • Lexsi Hackathon (Track 2b: AI Safety and Correction) • Author: Ankit Kumar Tiwari • Base Model: CohereLabs/tiny-aya-global",
             fontsize=9.0, ha="center", va="center", color="#64748B", fontfamily="sans-serif")
 
     plt.tight_layout()

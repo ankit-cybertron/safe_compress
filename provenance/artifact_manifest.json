@@ -1,10 +1,10 @@
 {
   "huggingface_model_collection": {
-    "url": "https://huggingface.co/collections/ankittiwarifr/safecompress",
+    "url": "https://huggingface.co/collections/cybertronak/safecompress-safety-aware-tiny-aya-compression",
     "description": "Collection of SafeCompress mixed-precision models and recipes across 20 experimental arms"
   },
   "huggingface_results_dataset": {
-    "url": "https://huggingface.co/datasets/ankittiwarifr/safecompress-results",
+    "url": "https://huggingface.co/datasets/cybertronak/layerlab-store",
     "description": "Published results dataset containing per-arm item scores, aggregate tables, figures, and code"
   },
   "data_retention_policy": {
