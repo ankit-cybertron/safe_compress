@@ -1,0 +1,22 @@
+{
+  "lexsi_toolkits": {
+    "circuitkit": {
+      "status": "COMPLETED & INTEGRATED",
+      "purpose": "Refusal-circuit localization, model hook architecture, and attribution-based circuit analysis",
+      "evidence": "scripts/ck_discover.py, scripts/ck_inspect.py, scripts/ck_diag.py, results/processed/gradattr_layer_scores.csv, notebooks/safe-compress.ipynb"
+    },
+    "auditkit": {
+      "status": "COMPLETED & INTEGRATED",
+      "purpose": "Independent multilingual refusal scoring of generated model outputs across key arms",
+      "evidence": "results/tables/auditkit_results.csv, results/statistics/auditkit_comparisons.csv, notebooks/safe-compress.ipynb"
+    },
+    "safetune": {
+      "status": "NOT APPLICABLE",
+      "purpose": "Fine-tuning toolkit; SafeCompress investigates post-training quantization without weight training"
+    },
+    "curatorkit": {
+      "status": "NOT APPLICABLE",
+      "purpose": "Dataset curation toolkit; public benchmarks (HarmBench, PolyGuardMix) used directly"
+    }
+  }
+}

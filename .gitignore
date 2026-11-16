@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Environments & virtualenvs
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Pytest & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# macOS system files
+.DS_Store
+
+# Temporary scratch and model checkpoint files
+scratch/
+responses/
+*.pt
+*.bin
+*.safetensors
+*.parquet
+*.token
+HF_TOKEN
+
+# Note: All processed score tables, manifests, and figures in results/
+# and artifacts/ ARE versioned for reproducibility.

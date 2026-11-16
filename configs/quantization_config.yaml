@@ -1,0 +1,45 @@
+# Quantization configurations used in SafeCompress experiments
+# Source: scripts/w_eval.py and scripts/lab_common.py
+
+# NF4 (Normal Float 4-bit) — used as the "rest" (non-protected) quantization
+nf4:
+  load_in_4bit: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "float16"
+  bnb_4bit_use_double_quant: false
+  bnb_4bit_quant_storage: "uint8"
+  blocksize: 64
+  notes: >
+    NF4 is the default bitsandbytes 4-bit quantization type. All non-protected
+    layers are quantized to NF4. Protected layers are kept at FP16 or INT8.
+
+# INT8 — used as the "protect" precision in W8_W4 arms
+int8:
+  load_in_8bit: true
+  llm_int8_threshold: 6.0
+  llm_int8_has_fp16_weight: false
+  notes: >
+    INT8 quantization (bitsandbytes LLM.int8()) is used for selected protected
+    layers in the _W8_W4 arm variants. Provides a middle ground between FP16
+    (full precision) and NF4 (4-bit).
+
+# Mixed-precision strategy
+mixed_precision:
+  protect_bits:
+    FP16_W4: 16    # protected layers = FP16, rest = NF4
+    W8_W4: 8       # protected layers = INT8, rest = NF4
+  rest_bits: 4     # all non-protected layers = NF4
+  k_protected: 5   # number of layers protected per arm
+  
+# Memory footprint (from results_table.csv — GPU alloc, NOT disk size)
+# Disk checkpoint sizes (from factory_gate.json and safecompress/ARTICLE.md):
+#   FP16 full precision:          6.70 GB  (state_dict on disk)
+#   Uniform NF4:                  2.53 GB  (state_dict on disk)
+#   Mixed FP16+W4 (5 layers):    ~3.11 GB (state_dict on disk)
+#   Mixed INT8+W4 (5 layers):    ~2.72 GB (state_dict on disk)
+#
+# GPU allocation (from results_table.csv — alloc_gb column):
+#   E0_FP16:           6.698 GB
+#   E1_uniform_W4:     2.525 GB
+#   S_*_FP16_W4:       3.122 GB
+#   S_*_W8_W4:         2.732 GB

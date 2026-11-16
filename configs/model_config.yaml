@@ -1,0 +1,29 @@
+# Model configuration for SafeCompress experiments
+# Source: safecompress_output/results_dataset/scores/anatomy.csv
+
+model:
+  id: "CohereForAI/aya-23-8B"
+  name: "Cohere AYA-23 8B"
+  architecture: "AYA (Cohere decoder-only, Command-R family)"
+  num_layers: 36          # 0-indexed layers 0..35
+  total_params_approx: "3.35B unique (tied embeddings)"
+  hidden_size: null       # not extracted from anatomy.csv; infer from bitsandbytes config
+  
+  # From anatomy.csv
+  layer_types:
+    sliding_attention_indices: [0,1,2,4,5,6,8,9,10,12,13,14,16,17,18,20,21,22,24,25,26,28,29,30,32,33,34]
+    full_attention_indices: [3,7,11,15,19,23,27,31,35]
+  
+  per_layer_params:
+    total_M: 78.12
+    attention_M: 10.49
+    mlp_M: 67.63
+  
+  # Vocabulary (inferred from first_tokens.json token IDs)
+  # EOS token 261001 implies large multilingual vocab
+  vocab_size_approx: 262144
+
+huggingface:
+  model_collection: "https://huggingface.co/collections/ankittiwarifr/safecompress"
+  loader_script: "artifacts/loaders/load_safecompress.py"
+  recipes: "artifacts/recipes/recipes.json"

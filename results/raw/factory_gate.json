@@ -1,0 +1,65 @@
+[
+  {
+    "arm_id": "E1_uniform_W4",
+    "protected_layers": [],
+    "prot_bits": 16,
+    "rest_bits": 4,
+    "disk_bytes": 2525520665,
+    "disk_gb": 2.5255,
+    "decode_tps": 12.62,
+    "new_tokens": 43,
+    "stop_compliant": true,
+    "stop_id_found": 261001,
+    "response_preview": "The capital of Japan is **Tokyo**. It is the country's political, economic, and cultural center, known for its vibrant cities, modern technology, and rich history. Let me know if you'd like more detai",
+    "effective_bits_per_param": 6.032,
+    "compression_vs_fp16": 2.652,
+    "old_true_bits_param_WRONG": 7.6774,
+    "note": "disk_bytes from torch.save(state_dict) (tied weights stored once). VRAM fields included memory left over from earlier arms in the same process; do not use them. Re-measure in fresh processes with optional cell B1 if needed."
+  },
+  {
+    "arm_id": "E3_circuit_FP16_W4",
+    "protected_layers": [
+      0,
+      3,
+      5,
+      17,
+      22
+    ],
+    "prot_bits": 16,
+    "rest_bits": 4,
+    "disk_bytes": 3105111436,
+    "disk_gb": 3.1051,
+    "decode_tps": 12.91,
+    "new_tokens": 43,
+    "stop_compliant": true,
+    "stop_id_found": 261001,
+    "response_preview": "The capital of Japan is **Tokyo**. It is the country's political, economic, and cultural center, known for its vibrant cities, modern technology, and rich history. Let me know if you'd like more detai",
+    "effective_bits_per_param": 7.417,
+    "compression_vs_fp16": 2.157,
+    "old_true_bits_param_WRONG": 9.4879,
+    "note": "disk_bytes from torch.save(state_dict) (tied weights stored once). VRAM fields included memory left over from earlier arms in the same process; do not use them. Re-measure in fresh processes with optional cell B1 if needed."
+  },
+  {
+    "arm_id": "E8_circuit_W8_W4",
+    "protected_layers": [
+      0,
+      3,
+      5,
+      17,
+      22
+    ],
+    "prot_bits": 8,
+    "rest_bits": 4,
+    "disk_bytes": 2715122846,
+    "disk_gb": 2.7151,
+    "decode_tps": 10.16,
+    "new_tokens": 45,
+    "stop_compliant": true,
+    "stop_id_found": 261001,
+    "response_preview": "The capital of Japan is **Tokyo**. It is the country's political, economic, and cultural center, known for its vibrant cities, advanced technology, and rich history. Would you like to know more about ",
+    "effective_bits_per_param": 6.485,
+    "compression_vs_fp16": 2.467,
+    "old_true_bits_param_WRONG": 8.1179,
+    "note": "disk_bytes from torch.save(state_dict) (tied weights stored once). VRAM fields included memory left over from earlier arms in the same process; do not use them. Re-measure in fresh processes with optional cell B1 if needed."
+  }
+]

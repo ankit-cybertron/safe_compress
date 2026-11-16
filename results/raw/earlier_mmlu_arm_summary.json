@@ -1,0 +1,170 @@
+[
+  {
+    "arm_id": "E0_FP16",
+    "protected_layers": [],
+    "prot_bits": 16,
+    "rest_bits": 16,
+    "en_acc": 0.51,
+    "hi_acc": 0.42,
+    "combined_acc": 0.465
+  },
+  {
+    "arm_id": "E1_uniform_W4",
+    "protected_layers": [],
+    "prot_bits": 16,
+    "rest_bits": 4,
+    "en_acc": 0.49,
+    "hi_acc": 0.406,
+    "combined_acc": 0.448
+  },
+  {
+    "arm_id": "E3_circuit_FP16_W4",
+    "protected_layers": [
+      0,
+      3,
+      5,
+      17,
+      22
+    ],
+    "prot_bits": 16,
+    "rest_bits": 4,
+    "en_acc": 0.5,
+    "hi_acc": 0.426,
+    "combined_acc": 0.463
+  },
+  {
+    "arm_id": "E4_least_FP16_W4",
+    "protected_layers": [
+      20,
+      28,
+      30,
+      31,
+      35
+    ],
+    "prot_bits": 16,
+    "rest_bits": 4,
+    "en_acc": 0.494,
+    "hi_acc": 0.408,
+    "combined_acc": 0.451
+  },
+  {
+    "arm_id": "E5_rand0_FP16_W4",
+    "protected_layers": [
+      9,
+      10,
+      16,
+      20,
+      31
+    ],
+    "prot_bits": 16,
+    "rest_bits": 4,
+    "en_acc": 0.508,
+    "hi_acc": 0.428,
+    "combined_acc": 0.468
+  },
+  {
+    "arm_id": "E6_rand1_FP16_W4",
+    "protected_layers": [
+      0,
+      16,
+      19,
+      24,
+      32
+    ],
+    "prot_bits": 16,
+    "rest_bits": 4,
+    "en_acc": 0.498,
+    "hi_acc": 0.414,
+    "combined_acc": 0.456
+  },
+  {
+    "arm_id": "E7_rand2_FP16_W4",
+    "protected_layers": [
+      2,
+      8,
+      9,
+      14,
+      31
+    ],
+    "prot_bits": 16,
+    "rest_bits": 4,
+    "en_acc": 0.502,
+    "hi_acc": 0.41,
+    "combined_acc": 0.456
+  },
+  {
+    "arm_id": "E8_circuit_W8_W4",
+    "protected_layers": [
+      0,
+      3,
+      5,
+      17,
+      22
+    ],
+    "prot_bits": 8,
+    "rest_bits": 4,
+    "en_acc": 0.502,
+    "hi_acc": 0.422,
+    "combined_acc": 0.462
+  },
+  {
+    "arm_id": "E9_least_W8_W4",
+    "protected_layers": [
+      20,
+      28,
+      30,
+      31,
+      35
+    ],
+    "prot_bits": 8,
+    "rest_bits": 4,
+    "en_acc": 0.49,
+    "hi_acc": 0.416,
+    "combined_acc": 0.453
+  },
+  {
+    "arm_id": "E10_rand0_W8_W4",
+    "protected_layers": [
+      9,
+      10,
+      16,
+      20,
+      31
+    ],
+    "prot_bits": 8,
+    "rest_bits": 4,
+    "en_acc": 0.51,
+    "hi_acc": 0.436,
+    "combined_acc": 0.473
+  },
+  {
+    "arm_id": "E11_rand1_W8_W4",
+    "protected_layers": [
+      0,
+      16,
+      19,
+      24,
+      32
+    ],
+    "prot_bits": 8,
+    "rest_bits": 4,
+    "en_acc": 0.49,
+    "hi_acc": 0.404,
+    "combined_acc": 0.447
+  },
+  {
+    "arm_id": "E12_rand2_W8_W4",
+    "protected_layers": [
+      2,
+      8,
+      9,
+      14,
+      31
+    ],
+    "prot_bits": 8,
+    "rest_bits": 4,
+    "en_acc": 0.498,
+    "hi_acc": 0.41,
+    "combined_acc": 0.454
+  }
+]

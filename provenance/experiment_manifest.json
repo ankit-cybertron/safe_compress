@@ -1,0 +1,32 @@
+{
+  "project": "SafeCompress",
+  "track": "Track 2b — Problem Statement 11: Safety-aware compression",
+  "base_model": "CohereForAI/aya-23-8B",
+  "total_layers": 36,
+  "k_protected_layers": 5,
+  "total_arms": 20,
+  "evaluation_prompts": {
+    "safety_total": 400,
+    "harmful_en": 100,
+    "harmful_hi": 100,
+    "benign_en": 100,
+    "benign_hi": 100,
+    "mmlu_total": 600,
+    "mmlu_en": 300,
+    "mmlu_hi": 300,
+    "belebele_total": 200,
+    "belebele_en": 100,
+    "belebele_hi": 100
+  },
+  "generation_parameters": {
+    "decoding": "greedy",
+    "temperature": 0.0,
+    "max_new_tokens": 48
+  },
+  "refusal_scoring": {
+    "internal_phrase_matcher_chars": 300,
+    "external_judge": "AuditKIT multilingual refusal judge",
+    "bootstrap_resamples": 10000,
+    "confidence_level": 0.95
+  }
+}

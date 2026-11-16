@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this research or software, please cite it as below."
+authors:
+  - family-names: Tiwari
+    given-names: Ankit Kumar
+title: "SafeCompress: Layer-Informed Mixed-Precision Quantization for Safety-Aware Model Compression"
+version: "0.1.0"
+date-released: "2026-11-16"
+url: "https://github.com/ankittiwarifr/safecompress"
+repository-code: "https://github.com/ankittiwarifr/safecompress"
+license: MIT
+keywords:
+  - AI safety
+  - model compression
+  - post-training quantization
+  - mixed-precision
+  - mechanistic interpretability
+  - refusal preservation
+  - multilingual safety
+references:
+  - type: software
+    title: "CohereForAI/aya-23-8B"
+    url: "https://huggingface.co/CohereForAI/aya-23-8B"
+  - type: dataset
+    title: "SafeCompress Results Dataset"
+    url: "https://huggingface.co/datasets/ankittiwarifr/safecompress-results"

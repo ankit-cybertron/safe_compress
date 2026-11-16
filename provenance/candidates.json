@@ -1,0 +1,40 @@
+{
+ "candidates": {
+  "A_importance_patching": [
+   0,
+   5,
+   17,
+   19,
+   22
+  ],
+  "B_fragility_kl": [
+   0,
+   7,
+   12,
+   16,
+   35
+  ],
+  "C_refusal_drop_under_nf4": [
+   7,
+   14,
+   16,
+   27,
+   35
+  ],
+  "D_composite_importance_x_fragility": [
+   0,
+   14,
+   16,
+   17,
+   19
+  ],
+  "N_negative_control_low_both": [
+   6,
+   25,
+   31,
+   33,
+   34
+  ]
+ },
+ "note": "not frozen; choose after reading layer_scores.csv"
+}

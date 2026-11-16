@@ -1,0 +1,121 @@
+# Experiment Configuration for SafeCompress 20-Arm Matrix
+# Source: safecompress_output/results_dataset/scores/arms.json
+
+experiment:
+  name: "safecompress_aya23_20arm"
+  model: "CohereForAI/aya-23-8B"
+  num_layers: 36
+  k_protected: 5
+  seed: 42
+
+arms:
+  # Baselines
+  - name: "E0_FP16"
+    description: "Unquantized 16-bit reference across all 36 layers"
+    protect: []
+    pbits: 16
+    rbits: 16
+
+  - name: "E1_uniform_W4"
+    description: "Uniform 4-bit NormalFloat (NF4) across all 36 layers"
+    protect: []
+    pbits: 4
+    rbits: 4
+
+  # Strategy A: Causal Importance via Activation Patching
+  - name: "S_A_importance_FP16_W4"
+    protect: [0, 5, 17, 19, 22]
+    pbits: 16
+    rbits: 4
+
+  - name: "S_A_importance_W8_W4"
+    protect: [0, 5, 17, 19, 22]
+    pbits: 8
+    rbits: 4
+
+  # Strategy B: Quantization Fragility via Output KL Divergence
+  - name: "S_B_fragility_FP16_W4"
+    protect: [0, 7, 12, 16, 35]
+    pbits: 16
+    rbits: 4
+
+  - name: "S_B_fragility_W8_W4"
+    protect: [0, 7, 12, 16, 35]
+    pbits: 8
+    rbits: 4
+
+  # Strategy C: Refusal Drop under NF4 Quantization
+  - name: "S_C_refusalDrop_FP16_W4"
+    protect: [7, 14, 16, 27, 35]
+    pbits: 16
+    rbits: 4
+
+  - name: "S_C_refusalDrop_W8_W4"
+    protect: [7, 14, 16, 27, 35]
+    pbits: 8
+    rbits: 4
+
+  # Strategy D: Composite Score (Importance * Fragility)
+  - name: "S_D_composite_FP16_W4"
+    protect: [0, 14, 16, 17, 19]
+    pbits: 16
+    rbits: 4
+
+  - name: "S_D_composite_W8_W4"
+    protect: [0, 14, 16, 17, 19]
+    pbits: 8
+    rbits: 4
+
+  # Strategy G: First-Order Gradient Attribution
+  - name: "S_G_gradattr_FP16_W4"
+    protect: [17, 19, 22, 27, 29]
+    pbits: 16
+    rbits: 4
+
+  - name: "S_G_gradattr_W8_W4"
+    protect: [17, 19, 22, 27, 29]
+    pbits: 8
+    rbits: 4
+
+  # Negative Control (Lowest ranked layers on both signals)
+  - name: "S_N_negative_FP16_W4"
+    protect: [6, 25, 31, 33, 34]
+    pbits: 16
+    rbits: 4
+
+  - name: "S_N_negative_W8_W4"
+    protect: [6, 25, 31, 33, 34]
+    pbits: 8
+    rbits: 4
+
+  # Random Controls (FP16 Protected)
+  - name: "R0_FP16_W4"
+    protect: [7, 13, 15, 24, 32]
+    pbits: 16
+    rbits: 4
+
+  - name: "R1_FP16_W4"
+    protect: [11, 15, 22, 27, 30]
+    pbits: 16
+    rbits: 4
+
+  - name: "R2_FP16_W4"
+    protect: [13, 14, 27, 31, 34]
+    pbits: 16
+    rbits: 4
+
+  - name: "R3_FP16_W4"
+    protect: [1, 5, 19, 27, 33]
+    pbits: 16
+    rbits: 4
+
+  # Random Controls (INT8 Protected)
+  - name: "R0_W8_W4"
+    protect: [7, 13, 15, 24, 32]
+    pbits: 8
+    rbits: 4
+
+  - name: "R1_W8_W4"
+    protect: [11, 15, 22, 27, 30]
+    pbits: 8
+    rbits: 4

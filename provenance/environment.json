@@ -1,0 +1,18 @@
+{
+  "execution_platform": "Kaggle Notebooks",
+  "accelerator": "NVIDIA T4 (single and dual-GPU configurations)",
+  "cuda_version": "12.x",
+  "python_version": "3.10.x",
+  "core_libraries": {
+    "torch": ">=2.0.0",
+    "transformers": ">=4.40.0",
+    "bitsandbytes": ">=0.43.0",
+    "accelerate": ">=0.28.0",
+    "datasets": ">=2.19.0",
+    "huggingface_hub": ">=0.22.0",
+    "scipy": ">=1.11.0",
+    "pandas": ">=2.0.0",
+    "numpy": ">=1.24.0"
+  },
+  "notes": "Execution executed across Kaggle instances. CircuitKIT discovery hit memory limits on T4 instances. All final evaluation tables and weights were verified and published from the notebook run."
+}

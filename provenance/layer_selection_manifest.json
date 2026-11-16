@@ -1,0 +1,558 @@
+{
+  "frozen_at_utc": "2026-11-16T00:06:34.153166+00:00",
+  "method": "activation patching (denoise + noise, whole-block), pooled over en/hi and both halves",
+  "stable": true,
+  "forced": false,
+  "scores_file_sha256": "9590a337e430702926249365b6d67190f3f151188872c272dea9fee38572bc60",
+  "num_layers": 36,
+  "layer_params": 78120960,
+  "protected_params_count": 390604800,
+  "layer_ranking": [
+    0,
+    22,
+    17,
+    5,
+    3,
+    11,
+    16,
+    7,
+    15,
+    14,
+    10,
+    19,
+    4,
+    9,
+    18,
+    21,
+    13,
+    12,
+    1,
+    33,
+    8,
+    27,
+    23,
+    34,
+    2,
+    29,
+    26,
+    6,
+    24,
+    32,
+    25,
+    28,
+    31,
+    35,
+    20,
+    30
+  ],
+  "pooled_scores": [
+    0.9978207877133023,
+    0.2021991835898438,
+    0.1680512961953871,
+    0.30474080366909434,
+    0.23466699978387742,
+    0.3167189426672072,
+    0.1436003158712414,
+    0.2654910000765968,
+    0.1967840815717962,
+    0.23460838911202098,
+    0.2443456649143292,
+    0.2787747403695085,
+    0.2167663640458154,
+    0.2213577196612483,
+    0.25944951323416954,
+    0.260885175666827,
+    0.2763413110492249,
+    0.3479418810541818,
+    0.23125010027008627,
+    0.24147262089288374,
+    0.008170357026295368,
+    0.2236499310878444,
+    0.3576188132395488,
+    0.1840205826383388,
+    0.12825444271797118,
+    0.11403219310026597,
+    0.1582056577202517,
+    0.19191662283978764,
+    0.08478692028162238,
+    0.16547931486851994,
+    0.00654569878850746,
+    0.06331425805870211,
+    0.12213293734901041,
+    0.1981239020632173,
+    0.17807143248436838,
+    0.03597986839754416
+  ],
+  "top5_circuit_layers": [
+    0,
+    3,
+    5,
+    17,
+    22
+  ],
+  "bottom5_negative_layers": [
+    20,
+    28,
+    30,
+    31,
+    35
+  ],
+  "random_sets_matched_on_full_attention_count": {
+    "seed_0": [
+      9,
+      10,
+      16,
+      20,
+      31
+    ],
+    "seed_1": [
+      0,
+      16,
+      19,
+      24,
+      32
+    ],
+    "seed_2": [
+      2,
+      8,
+      9,
+      14,
+      31
+    ],
+    "seed_3": [
+      2,
+      5,
+      8,
+      31,
+      34
+    ],
+    "seed_4": [
+      17,
+      27,
+      29,
+      32,
+      33
+    ],
+    "seed_5": [
+      0,
+      16,
+      25,
+      27,
+      28
+    ],
+    "seed_6": [
+      10,
+      16,
+      19,
+      32,
+      33
+    ],
+    "seed_7": [
+      20,
+      22,
+      30,
+      34,
+      35
+    ],
+    "seed_8": [
+      5,
+      6,
+      9,
+      27,
+      33
+    ],
+    "seed_9": [
+      4,
+      9,
+      15,
+      26,
+      32
+    ]
+  },
+  "full_attention_layers_in_top5": 1,
+  "stability": {
+    "half_overlap": 4,
+    "language_overlap": 4,
+    "min_valid_pairs": 24
+  },
+  "unified_matrix": {
+    "E0": {
+      "desc": "FP16_baseline",
+      "protected_layers": "ALL",
+      "protect_dtype": "FP16",
+      "base_dtype": "FP16"
+    },
+    "E1": {
+      "desc": "Uniform_W4",
+      "protected_layers": [],
+      "protect_dtype": "W4",
+      "base_dtype": "W4"
+    },
+    "E2": {
+      "desc": "Uniform_W8",
+      "protected_layers": [],
+      "protect_dtype": "W8",
+      "base_dtype": "W8"
+    },
+    "E3": {
+      "desc": "Circuit_FP16_W4",
+      "protected_layers": [
+        0,
+        3,
+        5,
+        17,
+        22
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E4": {
+      "desc": "LeastEffect5_FP16_W4_negative",
+      "protected_layers": [
+        20,
+        28,
+        30,
+        31,
+        35
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E8": {
+      "desc": "Circuit_W8_W4",
+      "protected_layers": [
+        0,
+        3,
+        5,
+        17,
+        22
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E9": {
+      "desc": "LeastEffect5_W8_W4_negative",
+      "protected_layers": [
+        20,
+        28,
+        30,
+        31,
+        35
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s0": {
+      "desc": "Random_FP16_W4_seed0",
+      "protected_layers": [
+        9,
+        10,
+        16,
+        20,
+        31
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s0": {
+      "desc": "Random_W8_W4_seed0",
+      "protected_layers": [
+        9,
+        10,
+        16,
+        20,
+        31
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s1": {
+      "desc": "Random_FP16_W4_seed1",
+      "protected_layers": [
+        0,
+        16,
+        19,
+        24,
+        32
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s1": {
+      "desc": "Random_W8_W4_seed1",
+      "protected_layers": [
+        0,
+        16,
+        19,
+        24,
+        32
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s2": {
+      "desc": "Random_FP16_W4_seed2",
+      "protected_layers": [
+        2,
+        8,
+        9,
+        14,
+        31
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s2": {
+      "desc": "Random_W8_W4_seed2",
+      "protected_layers": [
+        2,
+        8,
+        9,
+        14,
+        31
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s3": {
+      "desc": "Random_FP16_W4_seed3",
+      "protected_layers": [
+        2,
+        5,
+        8,
+        31,
+        34
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s3": {
+      "desc": "Random_W8_W4_seed3",
+      "protected_layers": [
+        2,
+        5,
+        8,
+        31,
+        34
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s4": {
+      "desc": "Random_FP16_W4_seed4",
+      "protected_layers": [
+        17,
+        27,
+        29,
+        32,
+        33
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s4": {
+      "desc": "Random_W8_W4_seed4",
+      "protected_layers": [
+        17,
+        27,
+        29,
+        32,
+        33
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s5": {
+      "desc": "Random_FP16_W4_seed5",
+      "protected_layers": [
+        0,
+        16,
+        25,
+        27,
+        28
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s5": {
+      "desc": "Random_W8_W4_seed5",
+      "protected_layers": [
+        0,
+        16,
+        25,
+        27,
+        28
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s6": {
+      "desc": "Random_FP16_W4_seed6",
+      "protected_layers": [
+        10,
+        16,
+        19,
+        32,
+        33
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s6": {
+      "desc": "Random_W8_W4_seed6",
+      "protected_layers": [
+        10,
+        16,
+        19,
+        32,
+        33
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s7": {
+      "desc": "Random_FP16_W4_seed7",
+      "protected_layers": [
+        20,
+        22,
+        30,
+        34,
+        35
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s7": {
+      "desc": "Random_W8_W4_seed7",
+      "protected_layers": [
+        20,
+        22,
+        30,
+        34,
+        35
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s8": {
+      "desc": "Random_FP16_W4_seed8",
+      "protected_layers": [
+        5,
+        6,
+        9,
+        27,
+        33
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s8": {
+      "desc": "Random_W8_W4_seed8",
+      "protected_layers": [
+        5,
+        6,
+        9,
+        27,
+        33
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E_rand_FP16_W4_s9": {
+      "desc": "Random_FP16_W4_seed9",
+      "protected_layers": [
+        4,
+        9,
+        15,
+        26,
+        32
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E_rand_W8_W4_s9": {
+      "desc": "Random_W8_W4_seed9",
+      "protected_layers": [
+        4,
+        9,
+        15,
+        26,
+        32
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E5": {
+      "desc": "Random_FP16_W4_seed0",
+      "protected_layers": [
+        9,
+        10,
+        16,
+        20,
+        31
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E10": {
+      "desc": "Random_W8_W4_seed0",
+      "protected_layers": [
+        9,
+        10,
+        16,
+        20,
+        31
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E6": {
+      "desc": "Random_FP16_W4_seed1",
+      "protected_layers": [
+        0,
+        16,
+        19,
+        24,
+        32
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E11": {
+      "desc": "Random_W8_W4_seed1",
+      "protected_layers": [
+        0,
+        16,
+        19,
+        24,
+        32
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    },
+    "E7": {
+      "desc": "Random_FP16_W4_seed2",
+      "protected_layers": [
+        2,
+        8,
+        9,
+        14,
+        31
+      ],
+      "protect_dtype": "FP16",
+      "base_dtype": "W4"
+    },
+    "E12": {
+      "desc": "Random_W8_W4_seed2",
+      "protected_layers": [
+        2,
+        8,
+        9,
+        14,
+        31
+      ],
+      "protect_dtype": "W8",
+      "base_dtype": "W4"
+    }
+  }
+}
