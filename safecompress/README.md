@@ -1,4 +1,9 @@
-# SafeCompress
+# SafeCompress (Preliminary Pilot Study Archive)
+
+> [!NOTE]
+> **HISTORICAL PILOT EXPERIMENT ARCHIVE (Phase 1 — 12 Arms):**  
+> This directory preserves the artifacts and preliminary notes from the initial 12-arm pilot study.  
+> **For the authoritative 20-arm research repository, current benchmarks, and methodology**, see the root [README.md](../README.md) and [ARTICLE.md](../ARTICLE.md).
 
 Does keeping patching-identified layers at higher precision during quantization preserve refusal, over-refusal and capability (English and Hindi) in CohereLabs/tiny-aya-global better than parameter-matched random layers, least-effect layers and uniform quantization?
 

@@ -1,5 +1,13 @@
 # SafeCompress: do "safety layers" survive quantization? A small, honest test on Tiny Aya
 
+> [!NOTE]
+> **HISTORICAL PILOT EXPERIMENT ARCHIVE (Phase 1 — 12 Arms):**  
+> This article documents the preliminary exploratory pilot study investigating initial activation patching across 12 experimental arms.  
+> **For the authoritative, complete 20-arm research study** (evaluating Refusal Drop Strategy C, NF4 KL Fragility, Gradient Attribution, AuditKIT independent verification, and Belebele context reasoning), refer to the root repository documentation:
+> - **Primary Research Overview:** [README.md](../README.md)
+> - **Full Published Research Paper:** [ARTICLE.md](../ARTICLE.md)
+> - **Canonical 20-Arm Evaluation Data:** [results/tables/results_table.csv](../results/tables/results_table.csv)
+
 *Ankit Kumar Tiwari. Lexsi AI Safety and Alignment Hackathon, Track 2b (safety-aware compression).*
 
 ## Question
