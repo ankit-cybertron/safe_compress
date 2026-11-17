@@ -40,8 +40,8 @@ def test_auditkit_results():
     assert path.exists()
     rows = _read_csv_dicts(path)
     
-    # 12 arms evaluated by AuditKIT
-    assert len(rows) == 12
+    # 16 arms evaluated by AuditKIT (including CircuitKIT, Consensus, and GradAttr)
+    assert len(rows) == 16
     assert "arm" in rows[0]
     assert any(k in rows[0] for k in ["ak_refusal_harmful", "auditkit_refusal", "refuse_harm", "refuse"])
 

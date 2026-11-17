@@ -1,0 +1,89 @@
+{
+ "collection": "cybertronak/safecompress-safety-aware-tiny-aya-compression-6afad2197fbbfb4832c0e67a",
+ "public": false,
+ "base_model": "CohereLabs/tiny-aya-global",
+ "recipes_repo": "cybertronak/safecompress-tinyaya-recipes-loader",
+ "models": [
+  {
+   "arm": "S_C_refusalDrop_FP16_W4",
+   "how": "checkpoint",
+   "repo": "cybertronak/safecompress-tinyaya-refusaldrop-fp16prot-nf4",
+   "fp16_layers": [
+    7,
+    14,
+    16,
+    27,
+    35
+   ]
+  },
+  {
+   "arm": "E1_uniform_W4",
+   "how": "checkpoint",
+   "repo": "cybertronak/safecompress-tinyaya-uniform-nf4",
+   "fp16_layers": []
+  },
+  {
+   "arm": "S_X_Cons5_FP16_W4",
+   "how": "checkpoint",
+   "repo": "cybertronak/safecompress-tinyaya-consensus5-fp16prot-nf4",
+   "fp16_layers": [
+    0,
+    7,
+    14,
+    16,
+    35
+   ]
+  },
+  {
+   "arm": "S_CK_circuitkit_FP16_W4",
+   "how": "checkpoint",
+   "repo": "cybertronak/safecompress-tinyaya-circuitkit-fp16prot-nf4",
+   "fp16_layers": [
+    0,
+    14,
+    16,
+    20,
+    35
+   ]
+  },
+  {
+   "arm": "S_C_refusalDrop_W8_W4",
+   "how": "loader",
+   "repo": "cybertronak/safecompress-tinyaya-recipes-loader",
+   "protect_layers": [
+    7,
+    14,
+    16,
+    27,
+    35
+   ],
+   "protect_bits": 8
+  },
+  {
+   "arm": "S_X_Cons5_W8_W4",
+   "how": "loader",
+   "repo": "cybertronak/safecompress-tinyaya-recipes-loader",
+   "protect_layers": [
+    0,
+    7,
+    14,
+    16,
+    35
+   ],
+   "protect_bits": 8
+  },
+  {
+   "arm": "S_CK_circuitkit_W8_W4",
+   "how": "loader",
+   "repo": "cybertronak/safecompress-tinyaya-recipes-loader",
+   "protect_layers": [
+    0,
+    14,
+    16,
+    20,
+    35
+   ],
+   "protect_bits": 8
+  }
+ ]
+}

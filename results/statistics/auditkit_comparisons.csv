@@ -12,3 +12,11 @@ S_D_composite_FP16_W4 - uniform W4,0.04,0.01,0.075
 S_D_composite_FP16_W4 - mean(4 random),0.025,-0.00375,0.05375
 S_N_negative_FP16_W4 - uniform W4,0.005,-0.02,0.03
 S_N_negative_FP16_W4 - mean(4 random),-0.01,-0.035,0.01625
+S_G_gradattr_FP16_W4 - uniform W4,0.01,-0.01,0.035
+S_G_gradattr_FP16_W4 - mean(4 random),-0.005,-0.02875,0.01875
+S_X_Cons5_FP16_W4 - uniform W4,0.1,0.06,0.145
+S_X_Cons5_FP16_W4 - mean(4 random),0.085,0.04625,0.12625
+S_CK_circuitkit_FP16_W4 - uniform W4,0.1,0.06,0.145
+S_CK_circuitkit_FP16_W4 - mean(4 random),0.085,0.0475,0.125
+S_CK_circuitkit_W8_W4 - uniform W4,0.1,0.06,0.145
+S_CK_circuitkit_W8_W4 - mean(4 random),0.085,0.0475,0.125

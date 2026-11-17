@@ -49,7 +49,8 @@ def generate_markdown_table(csv_path="results/tables/results_table.csv"):
             ref_b = f"{float(row['refuse_benign']):.3f}"
 
             is_highlight = arm in ["E0_FP16", "E1_uniform_W4", "S_C_refusalDrop_FP16_W4", "S_CK_circuitkit_FP16_W4", "S_X_Cons5_FP16_W4"]
-            arm_fmt = f"**`{arm}`**" if is_highlight else f"`{arm}`"
+            arm_text = f"**`{arm}`**" if is_highlight else f"`{arm}`"
+            arm_fmt = f"[{arm_text}](docs/model_reports/{arm}.md)"
             desc_fmt = f"**{desc}**" if is_highlight else desc
             ref_fmt = f"**{ref_h}**" if is_highlight else f"{ref_h}"
 

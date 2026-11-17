@@ -8,6 +8,8 @@ def generate_20arm_tradeoff_plot(csv_path="results/tables/results_table.csv", ou
     with open(csv_path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for i, row in enumerate(reader):
+            if i >= 20:
+                break
             arm_id = row["arm"]
             mmlu = float(row["mmlu"]) * 100.0
             refusal = float(row["refuse_harm"]) * 100.0

@@ -7,7 +7,6 @@ def generate_tradeoff_plot(csv_path="results/tables/results_table.csv", output_p
     if output_paths is None:
         output_paths = [
             "figures/tradeoffs/safety_capability_tradeoff_26arms.png",
-            "figures/tradeoffs/safety_capability_tradeoff_20arms.png"
         ]
 
     arms_data = []
