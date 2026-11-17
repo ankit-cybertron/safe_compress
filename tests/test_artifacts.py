@@ -15,8 +15,8 @@ def test_results_table():
     assert path.exists()
     rows = _read_csv_dicts(path)
     
-    # 20 experimental arms
-    assert len(rows) == 20
+    # 26 experimental arms (including CircuitKIT, Consensus, and size ablations)
+    assert len(rows) == 26
     
     # Core columns matching results_table.csv schema
     required_cols = [

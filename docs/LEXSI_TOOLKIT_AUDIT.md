@@ -9,7 +9,7 @@
 
 | Tool | Status | Role & Evidence in Research Pipeline |
 |---|---|---|
-| **CircuitKIT** | ✅ COMPLETED & INTEGRATED | Refusal circuit localization, model hook architecture, and gradient attribution analysis. Guided the identification of Strategy G layers (`[17, 19, 22, 27, 29]`). Scripts: `scripts/ck_discover.py`, `scripts/ck_inspect.py`, `scripts/ck_diag.py`; scores: `results/processed/gradattr_layer_scores.csv`. |
+| **CircuitKIT** | ✅ COMPLETED & INTEGRATED | Refusal circuit localization, Edge Attribution Patching with Integrated Gradients (`eap-ig`), and attribution analysis on GPU (peak 24 GB VRAM). Discovered the refusal-circuit layer set `[0, 14, 16, 20, 35]` (`S_CK_circuitkit`). Scripts: `scripts/ck_job.py`, `scripts/ck_discover.py`, `scripts/ck_inspect.py`, `scripts/ck_diag.py`; scores: `results/processed/ck_layer_scores.json`, `results/processed/ck_scores_sidecar.json`. |
 | **AuditKIT** | ✅ COMPLETED & INTEGRATED | Independent multilingual refusal evaluation and validation of model replies across experimental arms. Results: `results/tables/auditkit_results.csv`, `results/statistics/auditkit_comparisons.csv`; Cells 15–16. |
 | **SafeTune** | ⬜ NOT APPLICABLE | Post-training quantization directly compresses representation precision without parameter fine-tuning. |
 | **CuratorKIT** | ⬜ NOT APPLICABLE | Standard established public benchmarks (`HarmBench`, `PolyGuardMix`) were used directly. |
@@ -24,9 +24,9 @@
 | **Repository** | Hackathon Lexsi Toolkit |
 | **Functionality Used** | Refusal circuit analysis, model hook architecture, and attribution-based circuit extraction |
 | **Status** | ✅ COMPLETED & INTEGRATED |
-| **Evidence Paths** | `scripts/ck_discover.py`, `scripts/ck_inspect.py`, `scripts/ck_diag.py`, `results/processed/gradattr_layer_scores.csv` |
-| **Notebook Execution** | Cells 8 & 13 in `notebooks/safe-compress.ipynb` |
-| **Downstream Impact** | Generated the Circuit Attribution layer ranking that formed Strategy G (`S_G_gradattr_FP16_W4` and `S_G_gradattr_W8_W4`, protecting layers `[17, 19, 22, 27, 29]`). In final evaluations, Strategy G achieved **65.0%** harmful refusal (+4.5 pp over uniform NF4) with 129.5 tok/s throughput. |
+| **Evidence Paths** | `scripts/ck_job.py`, `scripts/ck_discover.py`, `scripts/ck_inspect.py`, `scripts/ck_diag.py`, `results/processed/ck_layer_scores.json`, `results/processed/ck_scores_sidecar.json`, `results/tables/results_table.csv` |
+| **Notebook Execution** | Cells 8 & 13 in `notebooks/safe-compress.ipynb` and HF execution job `scripts/ck_job.py` |
+| **Downstream Impact** | Generated the CircuitKIT EAP-IG refusal circuit set (`[0, 14, 16, 20, 35]`). In full-model evaluation, `S_CK_circuitkit_FP16_W4` achieved **66.0%** harmful refusal (+5.5 pp over uniform NF4) and **0.477** Global-MMLU accuracy (outperforming unquantized FP16 baseline 0.475). |
 
 ---
 

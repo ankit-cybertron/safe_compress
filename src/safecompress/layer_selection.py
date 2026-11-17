@@ -32,6 +32,18 @@ LAYER_SETS: dict[str, list[int]] = {
     
     # Strategy G: First-order gradient attribution (attribution patching on refusal gap)
     "G_gradattr": [17, 19, 22, 27, 29],
+    
+    # Strategy CK: CircuitKIT EAP-IG circuit discovery (Edge Attribution Patching)
+    "CK_circuitkit": [0, 14, 16, 20, 35],
+    
+    # Strategy Cons5: 5-layer consensus across interpretability and fragility methods
+    "X_Cons5": [0, 7, 14, 16, 35],
+    
+    # Ablation C3: 3-layer budget ablation (core refusal drop layers)
+    "X_C3": [16, 27, 35],
+    
+    # Ablation C4: 4-layer budget ablation
+    "X_C4": [7, 16, 27, 35],
 }
 
 # Random control sets (sampled without replacement, K=5 layers each)

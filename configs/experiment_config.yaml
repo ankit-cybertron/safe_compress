@@ -119,3 +119,36 @@ arms:
     protect: [11, 15, 22, 27, 30]
     pbits: 8
     rbits: 4
+
+  # Strategy Consensus: 5-Layer Consensus across signals
+  - name: "S_X_Cons5_FP16_W4"
+    protect: [0, 7, 14, 16, 35]
+    pbits: 16
+    rbits: 4
+
+  - name: "S_X_Cons5_W8_W4"
+    protect: [0, 7, 14, 16, 35]
+    pbits: 8
+    rbits: 4
+
+  # Budget Ablation: 3-Layer and 4-Layer Protected
+  - name: "S_X_C3_W8_W4"
+    protect: [16, 27, 35]
+    pbits: 8
+    rbits: 4
+
+  - name: "S_X_C4_W8_W4"
+    protect: [7, 16, 27, 35]
+    pbits: 8
+    rbits: 4
+
+  # Strategy CK: CircuitKIT EAP-IG Refusal Circuit Discovery
+  - name: "S_CK_circuitkit_FP16_W4"
+    protect: [0, 14, 16, 20, 35]
+    pbits: 16
+    rbits: 4
+
+  - name: "S_CK_circuitkit_W8_W4"
+    protect: [0, 14, 16, 20, 35]
+    pbits: 8
+    rbits: 4

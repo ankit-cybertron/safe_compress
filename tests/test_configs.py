@@ -27,7 +27,7 @@ def test_recipes_json():
     with open(recipes_path) as f:
         data = json.load(f)
     assert "arms" in data
-    assert len(data["arms"]) == 20
+    assert len(data["arms"]) == 26
     
     # Check that baseline arms exist
     arm_names = [arm["name"] if isinstance(arm, dict) else arm[0] for arm in data["arms"]]

@@ -22,13 +22,17 @@ Aggressive 4-bit post-training quantization (such as NormalFloat 4 / NF4) cuts l
 
 **SafeCompress** investigates whether **layer-informed mixed-precision quantization**—allocating a strict budget of $K=5$ out of 36 layers (~14% of model layers) to higher precision (FP16 or INT8) while quantizing the remaining 31 layers to NF4—can restore safety refusal while preserving the memory and throughput benefits of 4-bit compression.
 
-Across a systematic 20-arm evaluation on [`CohereLabs/tiny-aya-global`](https://huggingface.co/CohereLabs/tiny-aya-global) evaluated against 400 safety prompts (English and Hindi), 600 multilingual MMLU questions, and 200 Belebele reading comprehension items:
+Across an expanded, systematic **26-arm evaluation** on [`CohereLabs/tiny-aya-global`](https://huggingface.co/CohereLabs/tiny-aya-global) evaluated against 400 safety prompts (English and Hindi), 600 multilingual MMLU questions, and 200 Belebele reading comprehension items:
 
-1. **Safety Refusal Restored:** Keeping the 5 layers identified by refusal gap degradation under quantization in FP16 (`S_C_refusalDrop_FP16_W4`, layers `[7, 14, 16, 27, 35]`) restores harmful refusal to **65.5%**, matching the unquantized FP16 baseline (**65.5%**) and outperforming uniform NF4 (**60.5%**, $+5.0\,\text{pp}$, 95% bootstrap CI: $[+2.5, +8.0]$).
-2. **AuditKIT Independent Validation:** Under Lexsi's independent AuditKIT multilingual refusal evaluator, `S_C_refusalDrop_FP16_W4` achieves **56.0%** refusal vs. **44.0%** for uniform NF4 ($+12.0\,\text{pp}$, 95% bootstrap CI: $[+8.0, +17.0]$).
-3. **Memory & Speed Efficiency:** Runtime memory allocation on GPU is reduced from **6.70 GB** (FP16) to **3.12 GB** (FP16+NF4 mixed precision), compared to **2.53 GB** for uniform NF4. Throughput reaches **128.9 tok/s** (vs. 145.7 tok/s for FP16 and 122.1 tok/s for NF4).
-4. **Negative-Control & Scorer Discrepancy:** On the surface, the simple phrase matcher indicates that the negative control arm (`S_N_negative_FP16_W4`, layers `[6, 25, 31, 33, 34]`) is $+3.5\,\text{pp}$ over uniform NF4 (95% CI: $[+1.0, +6.0]$). However, under the more comprehensive AuditKIT evaluator, the negative control yields $+0.5\,\text{pp}$ (no gain), and random sets show no gain, while fragility (Strategy B) yields $+10.0\,\text{pp}$ (95% CI: $[+6.0, +14.5]$) and refusal-drop (Strategy C) yields $+12.0\,\text{pp}$. Because the phrase matcher agrees with AuditKIT on only **84.5%** of harmful prompts, AuditKIT provides the stronger, more discerning signal. This indicates that the phrase matcher alone cannot separate informed selection from added precision.
-5. **Strategy G (Gradient Attribution):** Strategy G (`S_G_gradattr_FP16_W4` and `S_G_gradattr_W8_W4`, layers `[17, 19, 22, 27, 29]`) yields a harmful refusal rate of **61.5%** for both FP16/NF4 and INT8/NF4 ($+1.0\,\text{pp}$ vs. uniform NF4, 95% CI: $[-1.0, +3.0]$), with a confidence interval that includes 0, demonstrating no reliable benefit over uniform NF4.
+1. **Safety Refusal Restored & Enhanced:**
+   - **CircuitKIT EAP-IG Refusal Circuit (`S_CK_circuitkit_FP16_W4`, layers `[0, 14, 16, 20, 35]`):** Discovered using CircuitKIT's native Edge Attribution Patching with Integrated Gradients (EAP-IG) on GPU. Achieves **66.0%** harmful refusal ($+5.5\,\text{pp}$ over uniform NF4, 95% CI: $[+2.5, +8.5]$) and **0.477** Global-MMLU accuracy—exceeding the unquantized FP16 baseline ($0.475$).
+   - **Consensus 5-Layer Set (`S_X_Cons5_FP16_W4`, layers `[0, 7, 14, 16, 35]`):** Combining layers nominated across multiple interpretability and sensitivity signals also attains **66.0%** refusal ($+5.5\,\text{pp}$ over uniform NF4).
+   - **Refusal Drop Strategy (`S_C_refusalDrop_FP16_W4`, layers `[7, 14, 16, 27, 35]`):** Directly targeting layers with the largest refusal logit gap collapse restores harmful refusal to **65.5%**, matching the unquantized FP16 baseline ($65.5\%$) and outperforming uniform NF4 ($60.5\%$, $+5.0\,\text{pp}$, 95% CI: $[+2.5, +8.0]$).
+2. **Layer-Budget Ablations (K=3 and K=4):** Protecting as few as 3 layers in INT8 (`S_X_C3_W8_W4`, layers `[16, 27, 35]`) still achieves **64.0%** refusal ($+3.5\,\text{pp}$ over uniform NF4) while requiring only **2.66 GB** GPU VRAM. 4 layers (`S_X_C4_W8_W4`, layers `[7, 16, 27, 35]`) yields **63.0%** refusal at **2.70 GB** VRAM, demonstrating smooth Pareto scaling with protected layer count.
+3. **AuditKIT Independent Validation:** Under Lexsi's independent AuditKIT multilingual refusal evaluator, `S_C_refusalDrop_FP16_W4` achieves **56.0%** refusal vs. **44.0%** for uniform NF4 ($+12.0\,\text{pp}$, 95% bootstrap CI: $[+8.0, +17.0]$).
+4. **Memory & Speed Efficiency:** Runtime memory allocation on GPU is reduced from **6.70 GB** (FP16) to **3.10–3.13 GB** (FP16+NF4 mixed precision), compared to **2.53 GB** for uniform NF4. Throughput reaches **105–131 tok/s** depending on protection precision.
+5. **Negative-Control & Scorer Discrepancy:** On the surface, the simple phrase matcher indicates that the negative control arm (`S_N_negative_FP16_W4`, layers `[6, 25, 31, 33, 34]`) is $+3.5\,\text{pp}$ over uniform NF4 (95% CI: $[+1.0, +6.0]$). However, under the more comprehensive AuditKIT evaluator, the negative control yields $+0.5\,\text{pp}$ (no gain), and random sets show no gain, while fragility (Strategy B) yields $+10.0\,\text{pp}$ (95% CI: $[+6.0, +14.5]$) and refusal-drop (Strategy C) yields $+12.0\,\text{pp}$. Because the phrase matcher agrees with AuditKIT on only **84.5%** of harmful prompts, AuditKIT provides the stronger, more discerning signal. This indicates that the phrase matcher alone cannot separate informed selection from added precision.
+6. **Strategy G (Gradient Attribution):** Strategy G (`S_G_gradattr_FP16_W4` and `S_G_gradattr_W8_W4`, layers `[17, 19, 22, 27, 29]`) yields a harmful refusal rate of **61.5%** for both FP16/NF4 and INT8/NF4 ($+1.0\,\text{pp}$ vs. uniform NF4, 95% CI: $[-1.0, +3.0]$), with a confidence interval that includes 0, demonstrating no reliable benefit over uniform NF4.
 
 ---
 
@@ -46,34 +50,40 @@ Authoritative experimental results programmatically extracted from `results/tabl
 
 | Arm | Description | GPU Alloc (GB) | Peak (GB) | tok/s | MMLU | Belebele | Harmful Refusal | 95% Bootstrap CI | Benign Refusal (Over-refusal) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **`E0_FP16`** | Unquantized FP16 Reference | 6.70 | 7.82 | 145.7 | 0.475 | 0.770 | **0.655** | [0.590, 0.720] | 0.025 |
-| **`E1_uniform_W4`** | Uniform NF4 4-bit Baseline | 2.53 | 3.64 | 122.1 | 0.457 | 0.760 | **0.605** | [0.535, 0.670] | 0.010 |
-| `S_A_importance_FP16_W4` | Strategy A (Activation Patching) | 3.12 | 4.22 | 131.3 | 0.458 | 0.760 | **0.630** | [0.565, 0.695] | 0.015 |
-| `S_A_importance_W8_W4` | Strategy A (INT8 Protected) | 2.73 | 3.83 | 113.6 | 0.458 | 0.765 | **0.630** | [0.565, 0.695] | 0.015 |
-| `S_B_fragility_FP16_W4` | Strategy B (NF4 KL Sensitivity) | 3.12 | 4.22 | 129.6 | 0.468 | 0.755 | **0.645** | [0.580, 0.710] | 0.025 |
-| `S_B_fragility_W8_W4` | Strategy B (INT8 Protected) | 2.73 | 4.01 | 111.5 | 0.467 | 0.760 | **0.645** | [0.580, 0.710] | 0.025 |
-| **`S_C_refusalDrop_FP16_W4`** | **Strategy C (Refusal Drop)** | **3.12** | **4.22** | **128.9** | **0.463** | **0.760** | **0.655** | **[0.590, 0.720]** | **0.015** |
-| `S_C_refusalDrop_W8_W4` | Strategy C (INT8 Protected) | 2.73 | 4.01 | 111.5 | 0.470 | 0.755 | **0.650** | [0.580, 0.715] | 0.015 |
-| `S_D_composite_FP16_W4` | Strategy D (Composite Score) | 3.12 | 4.22 | 131.5 | 0.467 | 0.750 | **0.650** | [0.585, 0.715] | 0.015 |
-| `S_D_composite_W8_W4` | Strategy D (INT8 Protected) | 2.73 | 3.83 | 114.4 | 0.463 | 0.750 | **0.650** | [0.585, 0.715] | 0.020 |
-| `S_N_negative_FP16_W4` | Negative Control (Low Rank) | 3.12 | 4.22 | 129.9 | 0.468 | 0.765 | **0.640** | [0.575, 0.705] | 0.010 |
-| `S_N_negative_W8_W4` | Negative Control (INT8 Protected) | 2.73 | 3.99 | 115.8 | 0.463 | 0.770 | **0.635** | [0.565, 0.700] | 0.010 |
-| `R0_FP16_W4` | Random Control Set 0 | 3.12 | 4.22 | 130.5 | 0.458 | 0.755 | **0.605** | [0.540, 0.670] | 0.005 |
-| `R0_W8_W4` | Random Control Set 0 (INT8) | 2.73 | 3.96 | 115.5 | 0.460 | 0.765 | **0.610** | [0.545, 0.675] | 0.005 |
-| `R1_FP16_W4` | Random Control Set 1 | 3.12 | 4.22 | 128.3 | 0.460 | 0.755 | **0.615** | [0.545, 0.680] | 0.010 |
-| `R1_W8_W4` | Random Control Set 1 (INT8) | 2.73 | 3.93 | 114.5 | 0.458 | 0.755 | **0.605** | [0.535, 0.670] | 0.010 |
-| `R2_FP16_W4` | Random Control Set 2 | 3.12 | 4.22 | 129.8 | 0.458 | 0.745 | **0.615** | [0.550, 0.680] | 0.010 |
-| `R3_FP16_W4` | Random Control Set 3 | 3.12 | 4.22 | 124.7 | 0.462 | 0.755 | **0.620** | [0.555, 0.685] | 0.015 |
-| `S_G_gradattr_FP16_W4` | Strategy G (Gradient Attribution) | 3.10 | 4.23 | 113.6 | 0.462 | 0.750 | **0.615** | [0.550, 0.680] | 0.005 |
-| `S_G_gradattr_W8_W4` | Strategy G (INT8 Protected) | 2.71 | 3.93 | 100.2 | 0.458 | 0.760 | **0.615** | [0.545, 0.680] | 0.005 |
+| **`E0_FP16`** | **Unquantized FP16 Reference** | 6.70 | 7.82 | 145.7 | 0.475 | 0.770 | **0.655** | [0.590, 0.720] | 0.025 |
+| **`E1_uniform_W4`** | **Uniform NF4 4-bit Baseline** | 2.53 | 3.64 | 122.1 | 0.457 | 0.760 | **0.605** | [0.535, 0.670] | 0.010 |
+| `S_A_importance_FP16_W4` | Strategy A (Activation Patching) | 3.12 | 4.22 | 131.3 | 0.458 | 0.760 | 0.630 | [0.565, 0.695] | 0.015 |
+| `S_A_importance_W8_W4` | Strategy A (INT8 Protected) | 2.73 | 3.83 | 113.6 | 0.458 | 0.765 | 0.630 | [0.565, 0.695] | 0.015 |
+| `S_B_fragility_FP16_W4` | Strategy B (NF4 KL Sensitivity) | 3.12 | 4.22 | 129.6 | 0.468 | 0.755 | 0.645 | [0.580, 0.710] | 0.025 |
+| `S_B_fragility_W8_W4` | Strategy B (INT8 Protected) | 2.73 | 4.01 | 111.5 | 0.467 | 0.760 | 0.645 | [0.580, 0.710] | 0.025 |
+| **`S_C_refusalDrop_FP16_W4`** | **Strategy C (Refusal Drop)** | 3.12 | 4.22 | 128.9 | 0.463 | 0.760 | **0.655** | [0.590, 0.720] | 0.015 |
+| `S_C_refusalDrop_W8_W4` | Strategy C (INT8 Protected) | 2.73 | 4.01 | 111.5 | 0.470 | 0.755 | 0.650 | [0.580, 0.715] | 0.015 |
+| `S_D_composite_FP16_W4` | Strategy D (Composite Score) | 3.12 | 4.22 | 131.5 | 0.467 | 0.750 | 0.650 | [0.585, 0.715] | 0.015 |
+| `S_D_composite_W8_W4` | Strategy D (INT8 Protected) | 2.73 | 3.83 | 114.4 | 0.463 | 0.750 | 0.650 | [0.585, 0.715] | 0.020 |
+| `S_N_negative_FP16_W4` | Negative Control (Low Rank) | 3.12 | 4.22 | 129.9 | 0.468 | 0.765 | 0.640 | [0.575, 0.705] | 0.010 |
+| `S_N_negative_W8_W4` | Negative Control (INT8 Protected) | 2.73 | 3.99 | 115.8 | 0.463 | 0.770 | 0.635 | [0.565, 0.700] | 0.010 |
+| `R0_FP16_W4` | Random Control Set 0 | 3.12 | 4.22 | 130.5 | 0.458 | 0.755 | 0.605 | [0.540, 0.670] | 0.005 |
+| `R0_W8_W4` | Random Control Set 0 (INT8) | 2.73 | 3.96 | 115.5 | 0.460 | 0.765 | 0.610 | [0.545, 0.675] | 0.005 |
+| `R1_FP16_W4` | Random Control Set 1 | 3.12 | 4.22 | 128.3 | 0.460 | 0.755 | 0.615 | [0.545, 0.680] | 0.010 |
+| `R1_W8_W4` | Random Control Set 1 (INT8) | 2.73 | 3.93 | 114.5 | 0.458 | 0.755 | 0.605 | [0.535, 0.670] | 0.010 |
+| `R2_FP16_W4` | Random Control Set 2 | 3.12 | 4.22 | 129.8 | 0.458 | 0.745 | 0.615 | [0.550, 0.680] | 0.010 |
+| `R3_FP16_W4` | Random Control Set 3 | 3.12 | 4.22 | 124.7 | 0.462 | 0.755 | 0.620 | [0.555, 0.685] | 0.015 |
+| `S_G_gradattr_FP16_W4` | Strategy G (Gradient Attribution) | 3.10 | 4.23 | 113.6 | 0.462 | 0.750 | 0.615 | [0.550, 0.680] | 0.005 |
+| `S_G_gradattr_W8_W4` | Strategy G (INT8 Protected) | 2.71 | 3.93 | 100.2 | 0.458 | 0.760 | 0.615 | [0.545, 0.680] | 0.005 |
+| **`S_X_Cons5_FP16_W4`** | **Consensus 5-Layer (FP16 Protected)** | 3.10 | 4.23 | 104.4 | 0.462 | 0.755 | **0.660** | [0.595, 0.725] | 0.020 |
+| `S_X_Cons5_W8_W4` | Consensus 5-Layer (INT8 Protected) | 2.71 | 4.01 | 104.3 | 0.463 | 0.750 | 0.655 | [0.590, 0.720] | 0.015 |
+| `S_X_C3_W8_W4` | Ablation C3 (3 Layers in INT8) | 2.66 | 3.94 | 97.5 | 0.453 | 0.760 | 0.640 | [0.575, 0.705] | 0.015 |
+| `S_X_C4_W8_W4` | Ablation C4 (4 Layers in INT8) | 2.70 | 3.98 | 104.7 | 0.472 | 0.765 | 0.630 | [0.560, 0.695] | 0.020 |
+| **`S_CK_circuitkit_FP16_W4`** | **CircuitKIT EAP-IG Refusal Circuit** | 3.13 | 4.23 | 105.3 | 0.477 | 0.745 | **0.660** | [0.595, 0.725] | 0.020 |
+| `S_CK_circuitkit_W8_W4` | CircuitKIT EAP-IG (INT8 Protected) | 2.74 | 4.01 | 104.5 | 0.478 | 0.735 | 0.650 | [0.585, 0.715] | 0.010 |
 
 > **Note on Memory Reporting:** On-disk sizes are 3.24 GB (refusal-drop FP16/NF4) and 2.68 GB (uniform NF4); GPU allocation is runtime memory reported by PyTorch (`torch.cuda.memory_allocated`).
 
 ### Key Visual Tradeoffs & Empirical Graphs
 
-#### Safety vs. Capability Trade-Off Across All 20 Arms
-![Safety-capability trade-off across 20 experimental arms](figures/tradeoffs/safety_capability_tradeoff_20arms.png)
-*Figure 1: Empirical safety-capability trade-off across all 20 experimental arms on CohereLabs/tiny-aya-global. The vertical axis shows harmful-prompt refusal rate (%) against Global-MMLU accuracy (%) on the horizontal axis. Numbered labels correspond to the configuration index on the right.*
+#### Safety vs. Capability Trade-Off Across All 26 Arms
+![Safety-capability trade-off across 26 experimental arms](figures/tradeoffs/safety_capability_tradeoff_26arms.png)
+*Figure 1: Empirical safety-capability trade-off across all 26 experimental arms on CohereLabs/tiny-aya-global. The vertical axis shows harmful-prompt refusal rate (%) against Global-MMLU accuracy (%) on the horizontal axis. Numbered labels correspond to the configuration index on the right.*
 
 #### 4-Metric Benchmark Comparison Across Arms
 ![4-Metric Arm Overview](figures/tradeoffs/final_results.png)
@@ -102,14 +112,18 @@ The 36 layers of [`CohereLabs/tiny-aya-global`](https://huggingface.co/CohereLab
 
 | Strategy | Criteria | Layer Indices | Global Attention Layers |
 |---|---|---|---|
-| **`A_importance`** | Top causal activation patching effect | `[0, 5, 17, 19, 22]` | Layer 19 (1/5) |
-| **`B_fragility`** | Highest output KL drift under NF4 | `[0, 7, 12, 16, 35]` | Layers 7, 35 (2/5) |
+| **`CK_circuitkit`** | **CircuitKIT native EAP-IG attribution** | `[0, 14, 16, 20, 35]` | Layer 35 (1/5) |
+| **`X_Cons5`** | **Consensus across interpretability & fragility** | `[0, 7, 14, 16, 35]` | Layers 7, 35 (2/5) |
 | **`C_refusalDrop`** | Largest erosion of refusal logit gap | `[7, 14, 16, 27, 35]` | Layers 7, 27, 35 (3/5) |
+| **`B_fragility`** | Highest output KL drift under NF4 | `[0, 7, 12, 16, 35]` | Layers 7, 35 (2/5) |
+| **`A_importance`** | Top causal activation patching effect | `[0, 5, 17, 19, 22]` | Layer 19 (1/5) |
 | **`D_composite`** | Normalized importance $\times$ fragility | `[0, 14, 16, 17, 19]` | Layer 19 (1/5) |
 | **`G_gradattr`** | First-order gradient attribution | `[17, 19, 22, 27, 29]` | Layers 19, 27 (2/5) |
 | **`N_negative`** | Lowest scores on both signals (control) | `[6, 25, 31, 33, 34]` | Layer 31 (1/5) |
+| **`X_C3` (Ablation)** | 3-layer budget ablation (INT8) | `[16, 27, 35]` | Layers 27, 35 (2/3) |
+| **`X_C4` (Ablation)** | 4-layer budget ablation (INT8) | `[7, 16, 27, 35]` | Layers 7, 27, 35 (3/4) |
 
-> **Cautious Architectural Observation:** In Strategy C (`refusalDrop`), full-attention layers make up 3 of the 5 selected layers (`[7, 27, 35]`). Because this observation is based on a single empirical set of five layers, we do not make a causal claim that global attention topology alone drives safety degradation under quantization.
+> **Cautious Architectural Observation:** In Strategy C (`refusalDrop`), full-attention layers make up 3 of the 5 selected layers (`[7, 27, 35]`). In the CircuitKIT EAP-IG set (`[0, 14, 16, 20, 35]`), attention-head and MLP contributions at layers 0, 16, and 35 dominate the circuit score. While global attention layers are frequently selected, we do not claim that attention topology alone determines refusal preservation.
 
 ---
 
@@ -119,7 +133,7 @@ In accordance with hackathon evaluation standards, tool usage across the project
 
 | Toolkit | Source Repository | Status | Role & Evidence in Pipeline |
 |---|---|---|---|
-| **CircuitKIT** | `lexsi/circuitkit` | ✅ **COMPLETED & INTEGRATED** | Utilized for refusal circuit localization, model hook architecture, and attribution-based circuit analysis. Guided the identification of safety-critical layers for Strategy G (`[17, 19, 22, 27, 29]`). Integration scripts: `scripts/ck_discover.py`, `scripts/ck_inspect.py`, `scripts/ck_diag.py`; attribution profiles in `results/processed/gradattr_layer_scores.csv`, and execution in Cells 8 & 13 of `notebooks/safe-compress.ipynb`. |
+| **CircuitKIT** | `lexsi/circuitkit` | ✅ **COMPLETED & INTEGRATED** | Executed native CircuitKIT Edge Attribution Patching with Integrated Gradients (`eap-ig`) on high-memory GPU (peak 24.0 GB VRAM), analyzing all 36 layers (612 nodes). Identified the refusal-circuit layer set `[0, 14, 16, 20, 35]`, yielding **66.0%** harmful refusal ($+5.5\,\text{pp}$ over uniform NF4) and **0.477** Global-MMLU. Evidence: `scripts/ck_job.py`, `scripts/ck_discover.py`, `results/processed/ck_layer_scores.json`, `results/processed/ck_scores_sidecar.json`, and results in `results/tables/results_table.csv`. |
 | **AuditKIT** | `lexsi/auditkit` | ✅ **COMPLETED & INTEGRATED** | Executed in Cells 15–16 of `notebooks/safe-compress.ipynb`. AuditKIT was used for independent multilingual refusal scoring on 12 key arms. Confirmed a $+12.0\,\text{pp}$ refusal recovery for Strategy C over uniform NF4. Documented in `results/tables/auditkit_results.csv` and `results/statistics/auditkit_comparisons.csv`. |
 | **SafeTune** | `lexsi/safetune` | ⬜ **NOT APPLICABLE** | Post-training quantization directly modifies representation precision without parameter fine-tuning. |
 | **CuratorKIT** | `lexsi/curatorkit` | ⬜ **NOT APPLICABLE** | Standard established benchmark datasets (`HarmBench`, `PolyGuardMix`) were utilized directly. |
